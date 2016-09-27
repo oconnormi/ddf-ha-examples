@@ -11,10 +11,24 @@ services:
       - 443:443
     volumes:
       - ./nodes/proxy/ddf.dev.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nodes/proxy/ddf.dev.key:/etc/nginx/ddf.dev.key
-      - ./nodes/proxy/ddf.dev.crt:/etc/nginx/ddf.dev.crt
-      - ./nodes/proxy/key.pass:/etc/nginx/key.pass
+      - ./nodes/proxy/certs/ddf.dev.key:/etc/ssl/private/ddf.dev.key
+      - ./nodes/proxy/certs/ddf.dev.crt:/etc/ssl/certs/ddf.dev.crt
+      - ./nodes/proxy/certs/key.pass:/etc/ssl/private/key.pass
     depends_on:
       - ddf1
   ddf1:
     image: oconnormi/ddf
+    environment:
+      - DDF_HOSTNAME=ddf.dev
+    volumes:
+      - ./nodes/ddf/entrypoint.sh:/opt/ddf/entrypoint.sh
+      - ./nodes/ddf/CertNew.sh:/opt/ddf/ddf-2.9.2/etc/certs/CertNew.sh
+    entrypoint: /opt/ddf/entrypoint.sh
+  ddf2:
+    image: oconnormi/ddf
+    environment:
+      - DDF_HOSTNAME=ddf.dev
+    volumes:
+      - ./nodes/ddf/entrypoint.sh:/opt/ddf/entrypoint.sh
+      - ./nodes/ddf/CertNew.sh:/opt/ddf/ddf-2.9.2/etc/certs/CertNew.sh
+    entrypoint: /opt/ddf/entrypoint.sh
