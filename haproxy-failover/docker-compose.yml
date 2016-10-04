@@ -1,0 +1,39 @@
+version: '2'
+services:
+  proxy:
+    image: hap-16
+    networks:
+      default:
+        aliases:
+          - haproxy
+    ports:
+      - 8993:8993
+      - 2220:2220
+    volumes:
+      - ./nodes/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - ddf1
+  ddf1:
+    image: oconnormi/ddf
+    networks:
+      default:
+        aliases:
+          - ddf.one
+    ports:
+      - 1993:8993
+    environment:
+      - DDF_HOSTNAME=haproxy
+    volumes:
+      - ./nodes/ddf/pre_start.sh:/opt/entrypoint/pre_start.sh
+  ddf2:
+    networks:
+      default:
+        aliases:
+          - ddf.two
+    ports:
+      - 2993:8993
+    image: oconnormi/ddf
+    environment:
+      - DDF_HOSTNAME=haproxy
+    volumes:
+      - ./nodes/ddf/pre_start.sh:/opt/entrypoint/pre_start.sh
