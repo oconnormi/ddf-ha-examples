@@ -1,7 +1,8 @@
 version: '2'
 services:
   proxy:
-    image: hap-16
+    build: ./nodes/haproxy
+    image: hap16-ddf
     networks:
       default:
         aliases:
