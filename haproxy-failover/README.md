@@ -24,3 +24,7 @@ each server according to the loabalancing method specified in the `balance` line
 > each packet sent to be routed individually according to the loadbalancing method specified. For example, if round robin is used, every packet sent
 > will be sent back and forth to each backend server. Since it uses a TCP connection, it should work, but would be very slow as each packet sent to
 > the wrong server will have to be retransmitted.
+
+# Client-Server Stickiness
+
+The file `nodes/haproxy/haproxy-sticky.cfg` contains an example setup using SSL Session ID stick-table. Rename this file to `haproxy.cfg` and rename the default `haproxy.cfg` file to use this load-balanced setup instead of the default failover-only setup.
